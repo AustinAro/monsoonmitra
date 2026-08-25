@@ -1,0 +1,1801 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MonsoonMitra - Biosphere Command Panel</title>
+    <meta name="description" content="Futuristic AI-driven agricultural biosphere command dashboard for village-level monsoon failure monitoring.">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;700&family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- Leaflet Map CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+    
+    <style>
+        :root {
+            --bg-color: #020806;
+            --panel-bg: rgba(6, 17, 13, 0.75);
+            --panel-border: rgba(0, 255, 170, 0.15);
+            --panel-border-glow: rgba(0, 255, 170, 0.05);
+            --text-primary: #e0f2fe;
+            --text-secondary: #64748b;
+            --text-cyan: #00f0ff;
+            --text-mint: #00ffaa;
+            
+            --risk-high: #ff2a5f;
+            --risk-high-glow: rgba(255, 42, 95, 0.2);
+            --risk-medium: #ffa500;
+            --risk-medium-glow: rgba(255, 165, 0, 0.2);
+            --risk-low: #00ff88;
+            --risk-low-glow: rgba(0, 255, 136, 0.2);
+            
+            --accent: #00ffaa;
+            --accent-glow: rgba(0, 255, 170, 0.3);
+            
+            --font-display: 'Outfit', sans-serif;
+            --font-body: 'Inter', sans-serif;
+            --font-mono: 'Fira Code', monospace;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            background-image: 
+                linear-gradient(rgba(0, 255, 170, 0.015) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 170, 0.015) 1px, transparent 1px);
+            background-size: 30px 30px;
+            color: var(--text-primary);
+            font-family: var(--font-body);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+            padding-bottom: 2rem;
+        }
+
+        /* Sleek Cyber Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #010403;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(0, 255, 170, 0.3);
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--text-mint);
+        }
+
+        header {
+            background: rgba(2, 8, 6, 0.85);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--panel-border);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            box-shadow: 0 4px 30px rgba(0, 255, 170, 0.03);
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .logo-icon {
+            width: 2.25rem;
+            height: 2.25rem;
+            background: transparent;
+            border: 2px solid var(--text-mint);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            font-family: var(--font-display);
+            font-size: 1.125rem;
+            color: var(--text-mint);
+            box-shadow: 0 0 10px rgba(0, 255, 170, 0.2);
+            text-shadow: 0 0 8px rgba(0, 255, 170, 0.5);
+        }
+
+        .logo-text h1 {
+            font-family: var(--font-display);
+            font-size: 1.35rem;
+            font-weight: 800;
+            letter-spacing: 0.05em;
+            color: #ffffff;
+            text-shadow: 0 0 10px rgba(0, 240, 255, 0.3);
+        }
+
+        .logo-text p {
+            font-family: var(--font-mono);
+            font-size: 0.65rem;
+            color: var(--text-mint);
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        button {
+            background: transparent;
+            color: var(--text-mint);
+            border: 1px solid var(--panel-border);
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            font-family: var(--font-mono);
+            font-weight: 500;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 0 10px rgba(0, 255, 170, 0.02);
+        }
+
+        button:hover {
+            background: rgba(0, 255, 170, 0.1);
+            border-color: var(--text-mint);
+            box-shadow: 0 0 15px rgba(0, 255, 170, 0.2);
+            color: #ffffff;
+        }
+
+        button.primary-cyber {
+            background: var(--text-mint);
+            color: var(--bg-color);
+            border: 1px solid var(--text-mint);
+            font-weight: 700;
+        }
+
+        button.primary-cyber:hover {
+            background: transparent;
+            color: var(--text-mint);
+            box-shadow: 0 0 20px rgba(0, 255, 170, 0.3);
+        }
+
+        .sync-badge {
+            background: rgba(0, 240, 255, 0.05);
+            border: 1px solid rgba(0, 240, 255, 0.2);
+            color: var(--text-cyan);
+            padding: 0.25rem 0.75rem;
+            border-radius: 4px;
+            font-family: var(--font-mono);
+            font-size: 0.65rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+            text-shadow: 0 0 5px rgba(0, 240, 255, 0.3);
+        }
+
+        .sync-dot {
+            width: 5px;
+            height: 5px;
+            background: var(--text-cyan);
+            border-radius: 50%;
+            animation: pulse 1.5s infinite;
+            box-shadow: 0 0 8px var(--text-cyan);
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(0.8); opacity: 0.5; }
+            50% { transform: scale(1.3); opacity: 1; }
+            100% { transform: scale(0.8); opacity: 0.5; }
+        }
+
+        main {
+            flex: 1;
+            width: 100%;
+            max-width: 1550px;
+            margin: 0 auto;
+            padding: 1rem 1.5rem;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+        }
+
+        @media (min-width: 1150px) {
+            main {
+                grid-template-columns: 2.2fr 1.3fr;
+                align-items: start;
+            }
+        }
+
+        /* Biosphere Glass Panels */
+        .glass-panel {
+            background: var(--panel-bg);
+            border: 1px solid var(--panel-border);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.4), inset 0 0 10px var(--panel-border-glow);
+            border-radius: 8px;
+            padding: 1.25rem;
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .glass-panel::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, rgba(0, 255, 170, 0.4), transparent);
+        }
+
+        /* Stats Row */
+        .stats-row {
+            grid-column: 1 / -1;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1rem;
+        }
+
+        .stat-card {
+            display: flex;
+            align-items: center;
+            gap: 1.25rem;
+            border-left: 3px solid var(--text-cyan);
+        }
+
+        .stat-card.high { border-left-color: var(--risk-high); }
+        .stat-card.medium { border-left-color: var(--risk-medium); }
+        .stat-card.low { border-left-color: var(--risk-low); }
+
+        .stat-icon {
+            font-size: 1.75rem;
+            filter: drop-shadow(0 0 8px currentColor);
+        }
+
+        .stat-icon.total { color: var(--text-cyan); }
+        .stat-icon.high { color: var(--risk-high); }
+        .stat-icon.medium { color: var(--risk-medium); }
+        .stat-icon.low { color: var(--risk-low); }
+
+        .stat-info h4 {
+            font-family: var(--font-mono);
+            font-size: 0.65rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 0.15rem;
+        }
+
+        .stat-info p {
+            font-family: var(--font-display);
+            font-size: 1.75rem;
+            font-weight: 800;
+            color: #ffffff;
+        }
+
+        .stat-info p span {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            margin-left: 0.25rem;
+            font-weight: normal;
+        }
+
+        /* Controls Panel */
+        .controls-panel {
+            grid-column: 1 / -1;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        @media (min-width: 768px) {
+            .controls-panel {
+                flex-direction: row;
+                align-items: center;
+                justify-content: space-between;
+            }
+        }
+
+        .search-box {
+            position: relative;
+            flex-grow: 1;
+            max-width: 450px;
+        }
+
+        .search-input {
+            width: 100%;
+            background: rgba(1, 4, 3, 0.85);
+            border: 1px solid var(--panel-border);
+            border-radius: 4px;
+            padding: 0.5rem 1rem 0.5rem 2.25rem;
+            color: var(--text-cyan);
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            outline: none;
+            transition: all 0.2s;
+        }
+
+        .search-input:focus {
+            border-color: var(--text-mint);
+            box-shadow: 0 0 10px rgba(0, 255, 170, 0.15);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-secondary);
+            pointer-events: none;
+            font-size: 0.75rem;
+        }
+
+        .filter-buttons {
+            display: flex;
+            gap: 0.25rem;
+            background: rgba(1, 4, 3, 0.9);
+            padding: 0.15rem;
+            border-radius: 4px;
+            border: 1px solid var(--panel-border);
+        }
+
+        .filter-btn {
+            background: transparent;
+            color: var(--text-secondary);
+            border: none;
+            padding: 0.35rem 0.75rem;
+            border-radius: 2px;
+            font-family: var(--font-mono);
+            font-size: 0.65rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            cursor: pointer;
+            box-shadow: none;
+            transition: all 0.15s;
+        }
+
+        .filter-btn:hover {
+            color: #ffffff;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .filter-btn.active {
+            background: rgba(0, 255, 170, 0.15);
+            color: var(--text-mint);
+            border: 1px solid rgba(0, 255, 170, 0.25);
+            box-shadow: none;
+            text-shadow: 0 0 5px rgba(0, 255, 170, 0.4);
+        }
+
+        /* Main Left Column */
+        .left-column {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .section-header {
+            font-family: var(--font-display);
+            font-size: 1rem;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            color: #ffffff;
+            text-transform: uppercase;
+            border-bottom: 1px solid rgba(0, 255, 170, 0.1);
+            padding-bottom: 0.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .section-header span.meta-val {
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            color: var(--text-mint);
+            text-shadow: 0 0 5px rgba(0, 255, 170, 0.3);
+        }
+
+        /* Village Cards Layout */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+        }
+
+        @media (min-width: 680px) {
+            .cards-grid {
+                grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
+            }
+        }
+
+        .village-card {
+            border: 1px solid var(--panel-border);
+            border-radius: 6px;
+            padding: 1rem;
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            background: rgba(4, 12, 9, 0.55);
+        }
+
+        .village-card.selected {
+            border-color: var(--text-cyan);
+            box-shadow: 0 0 15px rgba(0, 240, 255, 0.15);
+            background: rgba(4, 18, 14, 0.85);
+        }
+
+        .village-card.risk-high { border-left: 3px solid var(--risk-high); }
+        .village-card.risk-medium { border-left: 3px solid var(--risk-medium); }
+        .village-card.risk-low { border-left: 3px solid var(--risk-low); }
+        .village-card.risk-error { border-left: 3px solid #475569; }
+
+        .village-card:hover {
+            border-color: var(--text-mint);
+            box-shadow: 0 0 15px rgba(0, 255, 170, 0.1);
+            transform: translateY(-1px);
+        }
+
+        .card-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.75rem;
+        }
+
+        .card-name-group h3 {
+            font-family: var(--font-display);
+            font-size: 1rem;
+            font-weight: 600;
+            color: #ffffff;
+        }
+
+        .card-name-group p {
+            font-family: var(--font-mono);
+            font-size: 0.65rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+        }
+
+        /* Circular Dial Dial */
+        .circular-dial-wrapper {
+            width: 3.5rem;
+            height: 3.5rem;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .circular-text {
+            position: absolute;
+            font-family: var(--font-mono);
+            font-size: 0.6rem;
+            font-weight: 700;
+            text-align: center;
+        }
+
+        /* Core Card Analytics Grid */
+        .card-body-telemetry {
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 0.5rem;
+            background: rgba(1, 4, 3, 0.75);
+            padding: 0.5rem;
+            border-radius: 4px;
+            border: 1px solid rgba(0, 255, 170, 0.05);
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .telemetry-label { color: var(--text-secondary); }
+        .telemetry-val { color: #ffffff; text-align: right; font-weight: 600; }
+
+        /* Vertical Tube Charts Layout */
+        .tubes-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            height: 60px;
+            padding: 0.25rem 0.5rem;
+            background: rgba(1, 4, 3, 0.5);
+            border-radius: 4px;
+            border: 1px solid rgba(0, 255, 170, 0.02);
+            position: relative;
+        }
+
+        .tube-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex-grow: 1;
+            height: 100%;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .tube-shaft {
+            width: 6px;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 3px;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.02);
+        }
+
+        .tube-fill {
+            width: 100%;
+            position: absolute;
+            bottom: 0;
+            border-radius: 3px;
+            transition: height 0.4s ease;
+        }
+
+        .tube-item:hover .tube-shaft {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Tube chart hover tooltip */
+        .tube-tooltip {
+            position: absolute;
+            background: #010403;
+            border: 1px solid var(--text-mint);
+            color: #ffffff;
+            font-family: var(--font-mono);
+            font-size: 0.55rem;
+            padding: 0.15rem 0.35rem;
+            border-radius: 3px;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.15s;
+            z-index: 10;
+            white-space: nowrap;
+            box-shadow: 0 0 10px rgba(0, 255, 170, 0.15);
+        }
+
+        .tube-item:hover .tube-tooltip {
+            opacity: 1;
+        }
+
+        /* Tactical Map Layout */
+        .map-section {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            height: 380px;
+        }
+
+        .map-frame {
+            flex: 1;
+            border-radius: 6px;
+            border: 1px solid var(--panel-border);
+            overflow: hidden;
+            position: relative;
+        }
+
+        #map {
+            width: 100%;
+            height: 100%;
+            /* Custom CSS Tactical Filter overlaying the Leaflet dark map to make it organic cyber-green */
+            filter: hue-rotate(90deg) saturate(0.65) brightness(0.8) contrast(1.1);
+        }
+
+        /* RIGHT Column layout */
+        .right-column {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        /* Telecommunications Warning Simulator Panel */
+        .telecom-panel {
+            border-left: 2px solid var(--text-mint);
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .telecom-active-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .telecom-pulse-holder {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-family: var(--font-mono);
+            font-size: 0.65rem;
+            color: var(--text-mint);
+            text-transform: uppercase;
+        }
+
+        .telecom-signal-ring {
+            width: 8px;
+            height: 8px;
+            background: var(--text-mint);
+            border-radius: 50%;
+            position: relative;
+        }
+
+        .telecom-signal-ring::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            border-radius: 50%;
+            border: 1.5px solid var(--text-mint);
+            animation: ring-ripple 1.5s infinite linear;
+            box-shadow: 0 0 5px var(--text-mint);
+        }
+
+        @keyframes ring-ripple {
+            0% { transform: scale(1); opacity: 1; }
+            100% { transform: scale(2.5); opacity: 0; }
+        }
+
+        /* Mobile Device Mockup for SMS alert preview */
+        .sms-device-mockup {
+            background: rgba(1, 4, 3, 0.9);
+            border: 1px solid rgba(0, 255, 170, 0.2);
+            border-radius: 12px;
+            padding: 0.75rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            font-family: var(--font-body);
+            position: relative;
+        }
+
+        .sms-header-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-family: var(--font-mono);
+            font-size: 0.6rem;
+            color: var(--text-secondary);
+            border-bottom: 1px solid rgba(0, 255, 170, 0.08);
+            padding-bottom: 0.35rem;
+        }
+
+        .sms-sender-bubble {
+            align-self: center;
+            background: rgba(0, 255, 170, 0.08);
+            border: 1px solid rgba(0, 255, 170, 0.15);
+            border-radius: 12px;
+            padding: 0.25rem 0.75rem;
+            font-size: 0.65rem;
+            font-family: var(--font-mono);
+            color: var(--text-mint);
+            margin-top: 0.25rem;
+            text-align: center;
+        }
+
+        .sms-content-box {
+            background: #1e293b;
+            color: #ffffff;
+            border-radius: 12px 12px 12px 0;
+            padding: 0.75rem;
+            font-size: 0.775rem;
+            line-height: 1.4;
+            max-width: 90%;
+            border: 1px solid rgba(255,255,255,0.05);
+            align-self: flex-start;
+            position: relative;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+        }
+
+        .sms-lang-badge {
+            font-family: var(--font-mono);
+            font-size: 0.55rem;
+            color: var(--text-cyan);
+            background: rgba(0, 240, 255, 0.1);
+            padding: 0.1rem 0.35rem;
+            border-radius: 3px;
+            display: inline-block;
+            margin-top: 0.35rem;
+        }
+
+        /* Voice warning broadcast box */
+        .voice-section {
+            background: rgba(1, 4, 3, 0.6);
+            border: 1px solid rgba(0, 255, 170, 0.06);
+            border-radius: 6px;
+            padding: 0.75rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .voice-section h4 {
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+        }
+
+        /* Animated Audio Waves */
+        .audio-wave-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            height: 35px;
+            background: rgba(0,0,0,0.3);
+            border-radius: 4px;
+            border: 1px dashed rgba(0, 255, 170, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .audio-wave-bar {
+            width: 3px;
+            height: 5px;
+            background: var(--text-mint);
+            border-radius: 1.5px;
+            transition: height 0.15s ease;
+            box-shadow: 0 0 5px var(--text-mint);
+        }
+
+        .audio-wave-container.speaking .audio-wave-bar {
+            animation: audio-pulse 1.2s infinite ease-in-out;
+        }
+
+        /* Staggered animations */
+        .audio-wave-container.speaking .audio-wave-bar:nth-child(2) { animation-delay: 0.15s; }
+        .audio-wave-container.speaking .audio-wave-bar:nth-child(3) { animation-delay: 0.3s; }
+        .audio-wave-container.speaking .audio-wave-bar:nth-child(4) { animation-delay: 0.45s; }
+        .audio-wave-container.speaking .audio-wave-bar:nth-child(5) { animation-delay: 0.6s; }
+        .audio-wave-container.speaking .audio-wave-bar:nth-child(6) { animation-delay: 0.75s; }
+        .audio-wave-container.speaking .audio-wave-bar:nth-child(7) { animation-delay: 0.1s; }
+        .audio-wave-container.speaking .audio-wave-bar:nth-child(8) { animation-delay: 0.25s; }
+        .audio-wave-container.speaking .audio-wave-bar:nth-child(9) { animation-delay: 0.4s; }
+
+        @keyframes audio-pulse {
+            0% { height: 5px; }
+            50% { height: 28px; }
+            100% { height: 5px; }
+        }
+
+        /* Modal Design */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(2, 6, 4, 0.9);
+            backdrop-filter: blur(12px);
+            z-index: 2000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-overlay.open {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-content {
+            background: #04100c;
+            border: 1px solid var(--panel-border);
+            box-shadow: 0 0 40px rgba(0, 255, 170, 0.15);
+            border-radius: 8px;
+            width: 90%;
+            max-width: 460px;
+            padding: 1.75rem;
+            transform: scale(0.96);
+            transition: transform 0.3s ease;
+            position: relative;
+        }
+
+        .modal-content::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: var(--text-mint);
+        }
+
+        .modal-overlay.open .modal-content {
+            transform: scale(1);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.25rem;
+        }
+
+        .modal-title {
+            font-family: var(--font-display);
+            font-size: 1.15rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #ffffff;
+        }
+
+        .close-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: none;
+            padding: 0.2rem;
+            line-height: 1;
+            transition: color 0.15s;
+        }
+
+        .close-btn:hover {
+            color: var(--text-mint);
+            transform: none;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-label {
+            display: block;
+            font-family: var(--font-mono);
+            font-size: 0.65rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.35rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .form-input {
+            width: 100%;
+            background: rgba(1, 4, 3, 0.9);
+            border: 1px solid var(--panel-border);
+            border-radius: 4px;
+            padding: 0.5rem 0.75rem;
+            color: #ffffff;
+            font-family: var(--font-body);
+            font-size: 0.8rem;
+            outline: none;
+            transition: all 0.2s;
+        }
+
+        .form-input:focus {
+            border-color: var(--text-mint);
+            box-shadow: 0 0 10px rgba(0, 255, 170, 0.1);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.75rem;
+            margin-top: 1.5rem;
+        }
+
+        .refresh-spin {
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* Empty State */
+        .empty-state {
+            grid-column: 1 / -1;
+            background: rgba(6, 17, 13, 0.3);
+            border: 1px dashed var(--panel-border);
+            border-radius: 8px;
+            padding: 3rem 1.5rem;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+        }
+
+        .empty-icon {
+            font-size: 2rem;
+            color: var(--text-secondary);
+        }
+
+        .empty-title {
+            font-family: var(--font-display);
+            font-size: 1rem;
+            font-weight: 600;
+            color: #ffffff;
+        }
+
+        .empty-desc {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            max-width: 300px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo-section">
+            <div class="logo-icon">M</div>
+            <div class="logo-text">
+                <h1>MonsoonMitra</h1>
+                <p>Biosphere Tactical Command</p>
+            </div>
+        </div>
+        <div class="header-actions">
+            <div class="sync-badge" id="syncStatus">
+                <span class="sync-dot"></span>
+                <span id="syncText">Telemetry Synced</span>
+            </div>
+            <button id="syncLiveBtn" title="Sync live forecasts from API for all villages">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" id="syncIcon"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
+                Sync Live
+            </button>
+            <button id="addVillageBtn" class="primary-cyber">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                Add Target
+            </button>
+        </div>
+    </header>
+
+    <main>
+        <!-- Left Panel: Core Dashboard -->
+        <div class="left-column">
+            
+            <!-- Stats Row -->
+            <div class="stats-row">
+                <div class="glass-panel stat-card">
+                    <div class="stat-icon total">🗺️</div>
+                    <div class="stat-info">
+                        <h4>Biosphere Targets</h4>
+                        <p id="statTotal">-</p>
+                    </div>
+                </div>
+                <div class="glass-panel stat-card high">
+                    <div class="stat-icon high">🚨</div>
+                    <div class="stat-info">
+                        <h4>Water Deficit (High Risk)</h4>
+                        <p id="statHigh">-</p>
+                    </div>
+                </div>
+                <div class="glass-panel stat-card medium">
+                    <div class="stat-icon medium">⚠️</div>
+                    <div class="stat-info">
+                        <h4>Moderate (Medium Risk)</h4>
+                        <p id="statMedium">-</p>
+                    </div>
+                </div>
+                <div class="glass-panel stat-card low">
+                    <div class="stat-icon low">✅</div>
+                    <div class="stat-info">
+                        <h4>Sufficient (Low Risk)</h4>
+                        <p id="statLow">-</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Controls Panel -->
+            <div class="glass-panel controls-panel">
+                <div class="search-box">
+                    <span class="search-icon">🔍</span>
+                    <input type="text" id="searchInput" class="search-input" placeholder="Query village coordinates or name...">
+                </div>
+                <div class="filter-buttons">
+                    <button class="filter-btn active" data-filter="ALL">All Nodes</button>
+                    <button class="filter-btn" data-filter="HIGH">High Risk</button>
+                    <button class="filter-btn" data-filter="MEDIUM">Med Risk</button>
+                    <button class="filter-btn" data-filter="LOW">Low Risk</button>
+                </div>
+            </div>
+
+            <!-- Village Grid List -->
+            <div class="glass-panel" style="flex: 1;">
+                <h2 class="section-header">
+                    <span>Target Nodes</span>
+                    <span class="meta-val" id="cardsCountLabel">0 nodes shown</span>
+                </h2>
+                <div class="cards-grid" id="cardsGrid" style="margin-top: 1rem;">
+                    <!-- Village cards generated dynamically -->
+                </div>
+                <!-- Empty state -->
+                <div class="empty-state" id="emptyState" style="display: none; margin-top: 1rem;">
+                    <div class="empty-icon">🏜️</div>
+                    <div class="empty-title">Zero Telemetry Nodes Found</div>
+                    <div class="empty-desc">No monitored regions match the active filter configurations.</div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Right Panel: Map & Telecommunication alerts -->
+        <div class="right-column">
+            
+            <!-- Tactical Map -->
+            <div class="glass-panel map-section">
+                <h2 class="section-header">Tactical Heatmap</h2>
+                <div class="map-frame">
+                    <div id="map"></div>
+                </div>
+            </div>
+
+            <!-- Local Language Alert Broadcaster Panel -->
+            <div class="glass-panel telecom-panel">
+                <div class="telecom-active-header">
+                    <h2 class="section-header" style="border:none; padding:0; margin:0;">Alert Broadcaster</h2>
+                    <div class="telecom-pulse-holder">
+                        <span class="telecom-signal-ring"></span>
+                        <span>Satellite uplink</span>
+                    </div>
+                </div>
+                
+                <div id="telecomPlaceholder" style="text-align:center; padding: 2rem 1rem; color: var(--text-secondary); font-size:0.75rem;">
+                    <p>Select a village node to simulate broadcast transmissions.</p>
+                </div>
+
+                <div id="telecomContent" style="display: none; flex-direction: column; gap: 1rem;">
+                    <!-- Local Vernacular SMS mobile display -->
+                    <div class="sms-device-mockup">
+                        <div class="sms-header-bar">
+                            <span>Signal: 5G [IMD-MONSOON]</span>
+                            <span>Warning Alert</span>
+                        </div>
+                        <div class="sms-sender-bubble">Sender: MonsoonMitra Govt-Alert</div>
+                        <div class="sms-content-box">
+                            <p id="smsAlertText">-</p>
+                            <span class="sms-lang-badge" id="smsLangName">Language: -</span>
+                        </div>
+                        <div style="font-size:0.65rem; color: var(--text-secondary); text-align:right; font-family: var(--font-mono);">
+                            Status: Drafted & Ready to Send
+                        </div>
+                    </div>
+
+                    <!-- Voice alert speech simulation controls -->
+                    <div class="voice-section">
+                        <h4>Voice Broadcast Simulation</h4>
+                        <div class="audio-wave-container" id="audioWaveBox">
+                            <div class="audio-wave-bar"></div>
+                            <div class="audio-wave-bar"></div>
+                            <div class="audio-wave-bar"></div>
+                            <div class="audio-wave-bar"></div>
+                            <div class="audio-wave-bar"></div>
+                            <div class="audio-wave-bar"></div>
+                            <div class="audio-wave-bar"></div>
+                            <div class="audio-wave-bar"></div>
+                            <div class="audio-wave-bar"></div>
+                        </div>
+                        <div style="display:flex; gap: 0.5rem; align-items:center;">
+                            <button id="speakAlertBtn" class="primary-cyber" style="flex:1;">
+                                🔊 Broadcast Speech
+                            </button>
+                            <button id="stopSpeakBtn" style="padding:0.5rem;">
+                                ⏹️ Stop
+                            </button>
+                        </div>
+                        <p style="font-size:0.65rem; color: var(--text-secondary); font-family: var(--font-mono); line-height: 1.3;" id="ttsReadoutText">
+                            Click Broadcast to simulate automated phone call delivery to villages.
+                        </p>
+                    </div>
+                </div>
+
+                <div style="font-size:0.7rem; color: var(--text-secondary); text-align:center; font-family: var(--font-mono); border-top: 1px solid rgba(0, 255, 170, 0.05); padding-top: 0.75rem;" id="lastUpdatedLabel">
+                    System base: results.json
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Target Monitor Modal -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Track Biosphere Coordinates</h3>
+                <button class="close-btn" id="closeModalBtn">&times;</button>
+            </div>
+            <form id="addVillageForm">
+                <div class="form-group">
+                    <label class="form-label" for="vName">Node Name</label>
+                    <input type="text" id="vName" class="form-input" required placeholder="e.g. Hisar East">
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="vState">State / Territory</label>
+                    <input type="text" id="vState" class="form-input" required placeholder="e.g. Haryana">
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label" for="vLat">Latitude (N)</label>
+                        <input type="number" id="vLat" class="form-input" required step="any" min="8.0" max="38.0" placeholder="e.g. 29.1">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="vLon">Longitude (E)</label>
+                        <input type="number" id="vLon" class="form-input" required step="any" min="68.0" max="98.0" placeholder="e.g. 75.7">
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button type="button" id="cancelModalBtn">Abort</button>
+                    <button type="submit" class="primary-cyber">Establish Tracking</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Leaflet Map JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    
+    <script>
+        // Threshold configurations
+        const THRESHOLD = 50.0;
+        
+        // App State
+        let staticVillages = [];
+        let customVillages = [];
+        let activeFilter = 'ALL';
+        let searchQuery = '';
+        let selectedVillage = null;
+        
+        // Map markers
+        let map;
+        let mapMarkers = [];
+
+        // DOM elements
+        const cardsGrid = document.getElementById('cardsGrid');
+        const emptyState = document.getElementById('emptyState');
+        const cardsCountLabel = document.getElementById('cardsCountLabel');
+        const lastUpdatedLabel = document.getElementById('lastUpdatedLabel');
+        const syncStatus = document.getElementById('syncStatus');
+        const syncText = document.getElementById('syncText');
+        const syncIcon = document.getElementById('syncIcon');
+        const syncLiveBtn = document.getElementById('syncLiveBtn');
+        
+        // Stats boxes
+        const statTotal = document.getElementById('statTotal');
+        const statHigh = document.getElementById('statHigh');
+        const statMedium = document.getElementById('statMedium');
+        const statLow = document.getElementById('statLow');
+
+        // Modal elements
+        const modalOverlay = document.getElementById('modalOverlay');
+        const addVillageBtn = document.getElementById('addVillageBtn');
+        const closeModalBtn = document.getElementById('closeModalBtn');
+        const cancelModalBtn = document.getElementById('cancelModalBtn');
+        const addVillageForm = document.getElementById('addVillageForm');
+
+        // Alert Broadcaster DOM
+        const telecomPlaceholder = document.getElementById('telecomPlaceholder');
+        const telecomContent = document.getElementById('telecomContent');
+        const smsAlertText = document.getElementById('smsAlertText');
+        const smsLangName = document.getElementById('smsLangName');
+        const speakAlertBtn = document.getElementById('speakAlertBtn');
+        const stopSpeakBtn = document.getElementById('stopSpeakBtn');
+        const audioWaveBox = document.getElementById('audioWaveBox');
+        const ttsReadoutText = document.getElementById('ttsReadoutText');
+
+        // Voice state
+        let speechUtterance = null;
+
+        // Initialize Biosphere Dashboard
+        window.addEventListener('DOMContentLoaded', async () => {
+            initializeMap();
+            loadCustomVillages();
+            await fetchDashboardData();
+            setupEventListeners();
+        });
+
+        function initializeMap() {
+            // Leaflet Center on India
+            map = L.map('map', {
+                zoomControl: true,
+                attributionControl: false
+            }).setView([22.5, 78.5], 5);
+
+            // Fetch dark matter tiles (the tactical filter overlay in CSS converts it to green)
+            L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+                maxZoom: 18
+            }).addTo(map);
+        }
+
+        function loadCustomVillages() {
+            const data = localStorage.getItem('mm_custom_villages');
+            if (data) {
+                try {
+                    customVillages = JSON.parse(data);
+                } catch (e) {
+                    console.error("Failed to load local tracking logs", e);
+                    customVillages = [];
+                }
+            }
+        }
+
+        function saveCustomVillages() {
+            localStorage.setItem('mm_custom_villages', JSON.stringify(customVillages));
+        }
+
+        async function fetchDashboardData() {
+            setSyncingState(true, "Calibrating...");
+            try {
+                const response = await fetch('results.json');
+                if (response.ok) {
+                    const data = await response.json();
+                    staticVillages = data.map((v, i) => ({
+                        ...v,
+                        id: `static_${i}`,
+                        isCustom: false
+                    }));
+                    lastUpdatedLabel.textContent = "Telemetry source: results.json";
+                } else {
+                    console.warn("No baseline results.json found, running API fallback.");
+                    lastUpdatedLabel.textContent = "Telemetry source: API endpoints";
+                }
+            } catch (error) {
+                console.error("CORS / Fetch error loading results.json, direct syncing required", error);
+            }
+            
+            // Sync custom coordinates with open-meteo
+            await syncCustomVillagesForecast();
+            
+            updateDashboard();
+            setSyncingState(false, "Telemetry Synced");
+        }
+
+        async function syncCustomVillagesForecast() {
+            for (let i = 0; i < customVillages.length; i++) {
+                const v = customVillages[i];
+                if (!v.forecast_precip_mm || v.needsUpdate) {
+                    const updated = await fetchForecastLive(v.lat, v.lon);
+                    if (updated) {
+                        customVillages[i] = {
+                            ...v,
+                            forecast_precip_mm: updated.forecast_precip_mm,
+                            risk: updated.risk,
+                            daily_precip: updated.daily_precip,
+                            needsUpdate: false
+                        };
+                    } else {
+                        customVillages[i].risk = "ERROR";
+                        customVillages[i].forecast_precip_mm = 0;
+                        customVillages[i].daily_precip = Array(10).fill(0);
+                    }
+                }
+            }
+            saveCustomVillages();
+        }
+
+        async function fetchForecastLive(lat, lon) {
+            const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=precipitation_sum&timezone=Asia/Kolkata&forecast_days=10`;
+            try {
+                const resp = await fetch(url);
+                if (!resp.ok) throw new Error("Connection failed");
+                const data = await resp.json();
+                const precip = data.daily?.precipitation_sum || [];
+                const total = precip.reduce((a, b) => a + b, 0);
+                
+                let risk = "HIGH";
+                if (total >= THRESHOLD * 2) {
+                    risk = "LOW";
+                } else if (total >= THRESHOLD) {
+                    risk = "MEDIUM";
+                }
+
+                return {
+                    forecast_precip_mm: Math.round(total * 10) / 10,
+                    risk: risk,
+                    daily_precip: precip.map(p => Math.round(p * 10) / 10)
+                };
+            } catch (err) {
+                console.error(`Offline or CORS error fetching forecast for coordinates: ${lat}, ${lon}`, err);
+                return null;
+            }
+        }
+
+        async function syncAllVillagesLive() {
+            setSyncingState(true, "Broadcasting telemetry sync...");
+            
+            for (let v of staticVillages) {
+                const updated = await fetchForecastLive(v.lat, v.lon);
+                if (updated) {
+                    v.forecast_precip_mm = updated.forecast_precip_mm;
+                    v.risk = updated.risk;
+                    v.daily_precip = updated.daily_precip;
+                }
+            }
+            
+            for (let v of customVillages) {
+                const updated = await fetchForecastLive(v.lat, v.lon);
+                if (updated) {
+                    v.forecast_precip_mm = updated.forecast_precip_mm;
+                    v.risk = updated.risk;
+                    v.daily_precip = updated.daily_precip;
+                }
+            }
+            
+            saveCustomVillages();
+            lastUpdatedLabel.textContent = `Live Telemetry Sync: ${new Date().toLocaleTimeString()}`;
+            updateDashboard();
+            
+            // Re-select active village if one is chosen to update SMS panel
+            if (selectedVillage) {
+                const refreshed = getAllVillages().find(v => v.id === selectedVillage.id);
+                if (refreshed) selectVillage(refreshed, false);
+            }
+            
+            setSyncingState(false, "Telemetry Synced");
+        }
+
+        function setSyncingState(isSyncing, text) {
+            syncText.textContent = text;
+            if (isSyncing) {
+                syncIcon.classList.add('refresh-spin');
+                syncStatus.style.borderColor = 'var(--text-mint)';
+                syncStatus.style.color = 'var(--text-mint)';
+                document.querySelector('#syncStatus .sync-dot').style.background = 'var(--text-mint)';
+                document.querySelector('#syncStatus .sync-dot').style.boxShadow = '0 0 8px var(--text-mint)';
+            } else {
+                syncIcon.classList.remove('refresh-spin');
+                syncStatus.style.borderColor = 'rgba(0, 240, 255, 0.2)';
+                syncStatus.style.color = 'var(--text-cyan)';
+                document.querySelector('#syncStatus .sync-dot').style.background = 'var(--text-cyan)';
+                document.querySelector('#syncStatus .sync-dot').style.boxShadow = '0 0 8px var(--text-cyan)';
+            }
+        }
+
+        function getAllVillages() {
+            return [...staticVillages, ...customVillages];
+        }
+
+        function updateDashboard() {
+            const allVillages = getAllVillages();
+            
+            const filtered = allVillages.filter(v => {
+                const matchesRisk = activeFilter === 'ALL' || v.risk === activeFilter;
+                const matchesSearch = searchQuery === '' || 
+                    v.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                    v.state.toLowerCase().includes(searchQuery.toLowerCase());
+                return matchesRisk && matchesSearch;
+            });
+
+            // Counters
+            const counts = allVillages.reduce((acc, curr) => {
+                if (curr.risk === 'HIGH') acc.high++;
+                else if (curr.risk === 'MEDIUM') acc.medium++;
+                else if (curr.risk === 'LOW') acc.low++;
+                return acc;
+            }, { high: 0, medium: 0, low: 0 });
+
+            statTotal.textContent = allVillages.length;
+            statHigh.textContent = counts.high;
+            statMedium.textContent = counts.medium;
+            statLow.textContent = counts.low;
+
+            cardsCountLabel.textContent = `${filtered.length} nodes active / ${allVillages.length} total`;
+
+            cardsGrid.innerHTML = '';
+            if (filtered.length === 0) {
+                emptyState.style.display = 'flex';
+            } else {
+                emptyState.style.display = 'none';
+                filtered.forEach(v => {
+                    cardsGrid.appendChild(createVillageCard(v));
+                });
+            }
+
+            updateMapMarkers(filtered);
+        }
+
+        // Circular dial SVG gauge generator
+        function generateCircularDialSVG(risk, forecast) {
+            const size = 56; // 3.5rem equivalent
+            const radius = 22;
+            const circumference = 2 * Math.PI * radius;
+            
+            let color = 'var(--text-secondary)';
+            let percentage = 0;
+
+            if (risk === 'HIGH') {
+                color = 'var(--risk-high)';
+                percentage = 20; // minimal circle fill (dry threat)
+            } else if (risk === 'MEDIUM') {
+                color = 'var(--risk-medium)';
+                percentage = 55; // moderate fill
+            } else if (risk === 'LOW') {
+                color = 'var(--risk-low)';
+                percentage = 95; // full fill
+            }
+
+            const strokeDashOffset = circumference - (percentage / 100) * circumference;
+
+            return `
+                <svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">
+                    <circle cx="${size/2}" cy="${size/2}" r="${radius}" 
+                        fill="transparent" stroke="rgba(255,255,255,0.03)" stroke-width="4"></circle>
+                    <circle cx="${size/2}" cy="${size/2}" r="${radius}" 
+                        fill="transparent" stroke="${color}" stroke-width="4"
+                        stroke-dasharray="${circumference}" 
+                        stroke-dashoffset="${strokeDashOffset}"
+                        stroke-linecap="round"
+                        transform="rotate(-90 ${size/2} ${size/2})"
+                        style="filter: drop-shadow(0 0 5px ${color}44); transition: stroke-dashoffset 0.4s ease;">
+                    </circle>
+                </svg>
+            `;
+        }
+
+        function createVillageCard(v) {
+            const card = document.createElement('div');
+            card.className = `village-card risk-${(v.risk || 'ERROR').toLowerCase()}`;
+            if (selectedVillage && v.id === selectedVillage.id) {
+                card.classList.add('selected');
+            }
+
+            const dialSVG = generateCircularDialSVG(v.risk, v.forecast_precip_mm);
+
+            card.innerHTML = `
+                <div class="card-top">
+                    <div class="card-name-group">
+                        <h3>${v.name}</h3>
+                        <p>${v.state} ${v.isCustom ? '• [Custom Node]' : '• [Core Node]'}</p>
+                    </div>
+                    <div class="circular-dial-wrapper">
+                        ${dialSVG}
+                        <div class="circular-text" style="color: ${getRiskColorHex(v.risk)};">${v.risk || 'ERR'}</div>
+                    </div>
+                </div>
+                
+                <div class="card-body-telemetry">
+                    <span class="telemetry-label">10D Accumulation</span>
+                    <span class="telemetry-val" style="color: ${getRiskColorHex(v.risk)};">${v.forecast_precip_mm != null ? v.forecast_precip_mm + ' mm' : 'N/A'}</span>
+                    <span class="telemetry-label">Coordinates</span>
+                    <span class="telemetry-val">${v.lat.toFixed(2)}°N, ${v.lon.toFixed(2)}°E</span>
+                </div>
+
+                <!-- Vertical rain cylinders/tubes -->
+                <div class="tubes-container" id="tubes-${v.id}">
+                    <!-- Tube items injected here -->
+                </div>
+            `;
+
+            card.addEventListener('click', () => {
+                selectVillage(v);
+            });
+
+            // Generate tubes after element mounting
+            setTimeout(() => {
+                renderVerticalTubes(v);
+            }, 0);
+
+            return card;
+        }
+
+        // Render Vertical Rain Cylinders/Tubes
+        function renderVerticalTubes(v) {
+            const container = document.getElementById(`tubes-${v.id}`);
+            if (!container || !v.daily_precip || v.daily_precip.length === 0) return;
+
+            const precip = v.daily_precip;
+            const maxVal = Math.max(...precip, 8); // scale ceiling
+            const riskColor = getRiskColorHex(v.risk);
+
+            container.innerHTML = '';
+            precip.forEach((p, i) => {
+                const heightPercent = (p / maxVal) * 90; // max 90% height
+                
+                const tubeItem = document.createElement('div');
+                tubeItem.className = 'tube-item';
+                
+                tubeItem.innerHTML = `
+                    <div class="tube-tooltip">Day ${i+1}: ${p}mm</div>
+                    <div class="tube-shaft">
+                        <div class="tube-fill" style="height: ${heightPercent}%; background: ${riskColor}; box-shadow: 0 0 6px ${riskColor}88;"></div>
+                    </div>
+                `;
+                container.appendChild(tubeItem);
+            });
+        }
+
+        function getRiskColorHex(risk) {
+            if (risk === 'HIGH') return 'var(--risk-high)';
+            if (risk === 'MEDIUM') return 'var(--risk-medium)';
+            if (risk === 'LOW') return 'var(--risk-low)';
+            return '#64748b';
+        }
+
+        // Build English-language alert message for the broadcaster panel
+        function getVernacularAlert(v) {
+            const precip = v.forecast_precip_mm || 0.0;
+
+            if (v.risk === 'HIGH') {
+                return {
+                    lang: "English",
+                    text: `URGENT — Monsoon Failure Risk Alert for ${v.name}, ${v.state}: Only ${precip}mm of rainfall is forecast over the next 10 days, which is critically below the ${THRESHOLD}mm threshold needed for rain-fed crops. Crop failure risk is HIGH. Farmers are advised to activate supplemental irrigation, consider drought-resistant varieties, and contact local agricultural authorities immediately.`
+                };
+            } else if (v.risk === 'MEDIUM') {
+                return {
+                    lang: "English",
+                    text: `ADVISORY — Moderate Monsoon Stress Alert for ${v.name}, ${v.state}: Approximately ${precip}mm of rainfall is forecast over the next 10 days. This is below optimal levels. Crop failure risk is MODERATE. Farmers should monitor soil moisture closely, consider adjusting sowing schedules, and prepare contingency irrigation plans.`
+                };
+            } else {
+                return {
+                    lang: "English",
+                    text: `UPDATE — Adequate Monsoon Conditions for ${v.name}, ${v.state}: ${precip}mm of rainfall is forecast over the next 10 days, meeting crop water requirements. Monsoon risk is LOW. Normal agricultural operations can proceed. Continue monitoring forecasts for any changes.`
+                };
+            }
+        }
+
+        // Selection Action handler
+        function selectVillage(v, panMap = true) {
+            selectedVillage = v;
+            
+            // Style active card
+            document.querySelectorAll('.village-card').forEach(c => {
+                c.classList.remove('selected');
+            });
+            const card = document.querySelector(`[id="tubes-${v.id}"]`)?.parentElement;
+            if (card) card.classList.add('selected');
+
+            // Open popup on map
+            const marker = mapMarkers.find(m => m.villageId === v.id);
+            if (marker && panMap) {
+                map.setView(marker.getLatLng(), 8);
+                marker.openPopup();
+            }
+
+            // Stop any ongoing voice alert immediately on target swap
+            stopAlertSpeech();
+
+            // Populate localized warning simulator
+            telecomPlaceholder.style.display = 'none';
+            telecomContent.style.display = 'flex';
+
+            const alertData = getVernacularAlert(v);
+            smsAlertText.textContent = alertData.text;
+            smsLangName.textContent = `Broadcast Language: ${alertData.lang}`;
+            ttsReadoutText.textContent = `Click Broadcast to simulate an automated English voice warning call to ${v.name}.`;
+        }
+
+        // Browser-native speech synthesizer warning alert trigger
+        function playAlertSpeech() {
+            if (!selectedVillage) return;
+            
+            stopAlertSpeech(); // Clean slate
+
+            const alertData = getVernacularAlert(selectedVillage);
+            speechUtterance = new SpeechSynthesisUtterance(alertData.text);
+
+            // Use an English voice for global accessibility
+            const voices = window.speechSynthesis.getVoices();
+            const selectedVoice = voices.find(v =>
+                v.lang.startsWith('en-') || v.lang.startsWith('en_')
+            ) || null;
+
+            if (selectedVoice) {
+                speechUtterance.voice = selectedVoice;
+            }
+            
+            speechUtterance.rate = 0.9; // Slightly slower pace for clarity
+
+            // Visualizer pulse toggle
+            speechUtterance.onstart = () => {
+                audioWaveBox.classList.add('speaking');
+                ttsReadoutText.innerHTML = `<span style="color:var(--text-mint)">ACTIVE TRANSMISSION BROADCASTING</span><br>"${alertData.text}"`;
+            };
+
+            speechUtterance.onend = () => {
+                audioWaveBox.classList.remove('speaking');
+                ttsReadoutText.textContent = "Voice alert transmission completed successfully.";
+            };
+
+            speechUtterance.onerror = (e) => {
+                console.error("Speech Synthesis Error", e);
+                audioWaveBox.classList.remove('speaking');
+                ttsReadoutText.textContent = "Transmission failed. Verify browser audio output channels.";
+            };
+
+            window.speechSynthesis.speak(speechUtterance);
+        }
+
+        function stopAlertSpeech() {
+            if (window.speechSynthesis) {
+                window.speechSynthesis.cancel();
+            }
+            audioWaveBox.classList.remove('speaking');
+        }
+
+        function updateMapMarkers(villages) {
+            mapMarkers.forEach(m => map.removeLayer(m));
+            mapMarkers = [];
+
+            if (villages.length === 0) return;
+
+            const bounds = L.latLngBounds();
+
+            villages.forEach(v => {
+                // Tactical glowing marker pin
+                const icon = L.divIcon({
+                    className: `map-pin ${(v.risk || 'ERROR').toLowerCase()}`,
+                    iconSize: [28, 28],
+                    iconAnchor: [14, 28],
+                    popupAnchor: [0, -28],
+                    html: '<div class="map-pin-inner"></div>'
+                });
+
+                const popupContent = `
+                    <div style="font-family: var(--font-body); padding: 2px;">
+                        <h4 style="font-family: var(--font-display); font-size: 0.95rem; margin-bottom: 2px; font-weight: 700; color:#fff;">${v.name}</h4>
+                        <p style="font-size: 0.65rem; color: var(--text-cyan); font-family: var(--font-mono); margin-bottom: 6px;">${v.state} ${v.isCustom ? '[Custom]' : ''}</p>
+                        <div style="display:flex; justify-content:space-between; align-items:center; gap: 15px; margin-top:8px;">
+                            <span class="risk-badge ${(v.risk || 'ERROR').toLowerCase()}" style="font-size: 0.6rem; padding: 2px 6px; border-radius:3px; text-transform:uppercase; font-weight:700; background:rgba(0,0,0,0.3); border:1px solid currentColor;">${v.risk}</span>
+                            <strong style="color: ${getRiskColorHex(v.risk)}; font-size: 0.85rem; font-family: var(--font-mono);">${v.forecast_precip_mm} mm</strong>
+                        </div>
+                    </div>
+                `;
+
+                const marker = L.marker([v.lat, v.lon], { icon: icon })
+                    .bindPopup(popupContent)
+                    .addTo(map);
+
+                marker.villageId = v.id;
+                
+                marker.on('click', () => {
+                    selectVillage(v, false);
+                });
+
+                mapMarkers.push(marker);
+                bounds.extend([v.lat, v.lon]);
+            });
+
+            // Re-scale bounds
+            if (mapMarkers.length > 0 && activeFilter === 'ALL' && searchQuery === '') {
+                map.fitBounds(bounds, { padding: [30, 30] });
+            }
+        }
+
+        function setupEventListeners() {
+            // Search Input query
+            document.getElementById('searchInput').addEventListener('input', (e) => {
+                searchQuery = e.target.value;
+                updateDashboard();
+            });
+
+            // Filter Buttons
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                    e.target.classList.add('active');
+                    activeFilter = e.target.dataset.filter;
+                    updateDashboard();
+                });
+            });
+
+            // Sync telemetry live
+            syncLiveBtn.addEventListener('click', async () => {
+                await syncAllVillagesLive();
+            });
+
+            // Speech Simulation controls
+            speakAlertBtn.addEventListener('click', () => {
+                playAlertSpeech();
+            });
+
+            stopSpeakBtn.addEventListener('click', () => {
+                stopAlertSpeech();
+                ttsReadoutText.textContent = "Voice broadcast aborted.";
+            });
+
+            // Modal dialog toggles
+            addVillageBtn.addEventListener('click', () => {
+                modalOverlay.classList.add('open');
+                document.getElementById('vName').focus();
+            });
+
+            const closeModal = () => {
+                modalOverlay.classList.remove('open');
+                addVillageForm.reset();
+            };
+
+            closeModalBtn.addEventListener('click', closeModal);
+            cancelModalBtn.addEventListener('click', closeModal);
+            modalOverlay.addEventListener('click', (e) => {
+                if (e.target === modalOverlay) closeModal();
+            });
+
+            // Form Submit Custom Coordinate Node Addition
+            addVillageForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                
+                const name = document.getElementById('vName').value.trim();
+                const state = document.getElementById('vState').value.trim();
+                const lat = parseFloat(document.getElementById('vLat').value);
+                const lon = parseFloat(document.getElementById('vLon').value);
+
+                if (!name || !state || isNaN(lat) || isNaN(lon)) return;
+
+                const newVillage = {
+                    id: `custom_${Date.now()}`,
+                    name,
+                    state,
+                    lat,
+                    lon,
+                    isCustom: true,
+                    needsUpdate: true
+                };
+
+                customVillages.push(newVillage);
+                saveCustomVillages();
+                closeModal();
+                updateDashboard();
+
+                setSyncingState(true, `Calibrating node ${name}...`);
+                const forecast = await fetchForecastLive(lat, lon);
+                
+                const idx = customVillages.findIndex(cv => cv.id === newVillage.id);
+                if (idx !== -1) {
+                    if (forecast) {
+                        customVillages[idx] = {
+                            ...customVillages[idx],
+                            ...forecast,
+                            needsUpdate: false
+                        };
+                    } else {
+                        customVillages[idx].risk = 'ERROR';
+                        customVillages[idx].forecast_precip_mm = 0.0;
+                        customVillages[idx].daily_precip = Array(10).fill(0.0);
+                    }
+                    saveCustomVillages();
+                }
+
+                setSyncingState(false, "Telemetry Synced");
+                updateDashboard();
+                
+                // Active focus and select new node
+                selectVillage(customVillages[idx]);
+            });
+        }
+    </script>
+</body>
+</html>
