@@ -38,7 +38,7 @@ jobs:
           git add results.json
           # Check if there are staged changes to commit
           if ! git diff --cached --quiet; then
-            git commit -m "data: daily monsoon risk assessment updates [skip ci]"
+            git commit -m "data: daily monsoon risk assessment updates"
             git push
           else
             echo "No changes to weather forecast results.json."
