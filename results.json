@@ -4,19 +4,19 @@
     "state": "Punjab",
     "lat": 30.9,
     "lon": 75.8,
-    "forecast_precip_mm": 18.7,
+    "forecast_precip_mm": 9.5,
     "risk": "HIGH",
     "daily_precip": [
-      2.4,
       0.1,
-      0.2,
-      0.7,
-      1.2,
-      0.9,
-      6.6,
+      0.1,
+      1.1,
+      0.4,
       0.6,
-      1.8,
-      4.2
+      1.2,
+      2.4,
+      0.6,
+      0.6,
+      2.4
     ]
   },
   {
@@ -24,19 +24,19 @@
     "state": "Haryana",
     "lat": 29.1,
     "lon": 75.7,
-    "forecast_precip_mm": 7.3,
+    "forecast_precip_mm": 9.0,
     "risk": "HIGH",
     "daily_precip": [
-      0.1,
       0.0,
       0.0,
       0.0,
       0.0,
       0.0,
+      0.0,
+      4.2,
+      4.2,
       0.6,
-      3.6,
-      1.8,
-      1.2
+      0.0
     ]
   },
   {
@@ -44,19 +44,19 @@
     "state": "Rajasthan",
     "lat": 26.9,
     "lon": 75.8,
-    "forecast_precip_mm": 45.9,
+    "forecast_precip_mm": 43.8,
     "risk": "HIGH",
     "daily_precip": [
-      0.1,
-      0.2,
       0.0,
       0.0,
       0.0,
       0.0,
       0.0,
-      22.2,
-      19.8,
-      3.6
+      0.0,
+      12.6,
+      16.2,
+      12.6,
+      2.4
     ]
   },
   {
@@ -64,19 +64,19 @@
     "state": "Madhya Pradesh",
     "lat": 22.7,
     "lon": 75.9,
-    "forecast_precip_mm": 118.3,
+    "forecast_precip_mm": 168.5,
     "risk": "LOW",
     "daily_precip": [
-      44.8,
-      1.4,
+      0.2,
+      1.0,
+      0.2,
       0.3,
-      0.7,
-      0.3,
-      1.2,
       0.6,
-      1.8,
-      3.0,
-      64.2
+      0.0,
+      2.4,
+      16.8,
+      56.4,
+      90.6
     ]
   },
   {
@@ -84,19 +84,19 @@
     "state": "Maharashtra",
     "lat": 18.5,
     "lon": 73.9,
-    "forecast_precip_mm": 18.3,
+    "forecast_precip_mm": 17.7,
     "risk": "HIGH",
     "daily_precip": [
-      0.9,
-      2.0,
-      4.1,
-      1.7,
-      1.5,
+      2.1,
+      1.4,
+      1.9,
       0.3,
-      1.2,
+      1.8,
       1.2,
       1.8,
-      3.6
+      0.6,
+      4.2,
+      2.4
     ]
   }
 ]
