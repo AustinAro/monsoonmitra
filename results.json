@@ -4,19 +4,19 @@
     "state": "Punjab",
     "lat": 30.9,
     "lon": 75.8,
-    "forecast_precip_mm": 9.5,
+    "forecast_precip_mm": 37.1,
     "risk": "HIGH",
     "daily_precip": [
-      0.1,
-      0.1,
-      1.1,
+      0.3,
+      1.5,
+      0.7,
       0.4,
-      0.6,
-      1.2,
-      2.4,
-      0.6,
-      0.6,
-      2.4
+      0.3,
+      3.6,
+      3.3,
+      0.0,
+      15.0,
+      12.0
     ]
   },
   {
@@ -24,7 +24,7 @@
     "state": "Haryana",
     "lat": 29.1,
     "lon": 75.7,
-    "forecast_precip_mm": 9.0,
+    "forecast_precip_mm": 4.8,
     "risk": "HIGH",
     "daily_precip": [
       0.0,
@@ -32,11 +32,11 @@
       0.0,
       0.0,
       0.0,
-      0.0,
-      4.2,
-      4.2,
+      1.2,
       0.6,
-      0.0
+      0.6,
+      0.6,
+      1.8
     ]
   },
   {
@@ -44,7 +44,7 @@
     "state": "Rajasthan",
     "lat": 26.9,
     "lon": 75.8,
-    "forecast_precip_mm": 43.8,
+    "forecast_precip_mm": 49.5,
     "risk": "HIGH",
     "daily_precip": [
       0.0,
@@ -52,11 +52,11 @@
       0.0,
       0.0,
       0.0,
-      0.0,
-      12.6,
-      16.2,
-      12.6,
-      2.4
+      0.3,
+      3.0,
+      18.6,
+      9.0,
+      18.6
     ]
   },
   {
@@ -64,19 +64,19 @@
     "state": "Madhya Pradesh",
     "lat": 22.7,
     "lon": 75.9,
-    "forecast_precip_mm": 168.5,
+    "forecast_precip_mm": 148.7,
     "risk": "LOW",
     "daily_precip": [
-      0.2,
-      1.0,
-      0.2,
+      1.4,
       0.3,
       0.6,
-      0.0,
+      0.9,
+      0.6,
+      0.3,
       2.4,
-      16.8,
-      56.4,
-      90.6
+      79.8,
+      57.6,
+      4.8
     ]
   },
   {
@@ -84,19 +84,19 @@
     "state": "Maharashtra",
     "lat": 18.5,
     "lon": 73.9,
-    "forecast_precip_mm": 17.7,
+    "forecast_precip_mm": 19.4,
     "risk": "HIGH",
     "daily_precip": [
-      2.1,
-      1.4,
-      1.9,
-      0.3,
+      2.6,
+      3.4,
+      0.9,
+      1.1,
+      2.4,
       1.8,
-      1.2,
-      1.8,
+      2.4,
+      2.4,
       0.6,
-      4.2,
-      2.4
+      1.8
     ]
   }
 ]
