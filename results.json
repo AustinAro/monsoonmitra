@@ -4,19 +4,19 @@
     "state": "Punjab",
     "lat": 30.9,
     "lon": 75.8,
-    "forecast_precip_mm": 7.6,
+    "forecast_precip_mm": 12.5,
     "risk": "HIGH",
     "daily_precip": [
-      1.1,
+      0.9,
       0.0,
       0.2,
       0.0,
       0.0,
-      1.5,
+      0.0,
       0.6,
-      0.6,
-      2.4,
-      1.2
+      6.0,
+      4.2,
+      0.6
     ]
   },
   {
@@ -24,19 +24,19 @@
     "state": "Haryana",
     "lat": 29.1,
     "lon": 75.7,
-    "forecast_precip_mm": 7.7,
+    "forecast_precip_mm": 4.8,
     "risk": "HIGH",
     "daily_precip": [
-      1.1,
       0.0,
       0.0,
       0.0,
       0.0,
+      0.6,
+      0.0,
+      0.6,
       1.2,
-      1.2,
-      1.2,
-      1.2,
-      1.8
+      0.0,
+      2.4
     ]
   },
   {
@@ -44,19 +44,19 @@
     "state": "Rajasthan",
     "lat": 26.9,
     "lon": 75.8,
-    "forecast_precip_mm": 20.8,
+    "forecast_precip_mm": 13.7,
     "risk": "HIGH",
     "daily_precip": [
-      0.9,
-      1.0,
+      0.1,
       0.0,
       0.0,
-      0.0,
-      0.3,
-      1.2,
-      7.8,
-      6.0,
-      3.6
+      0.1,
+      3.9,
+      4.8,
+      0.6,
+      1.8,
+      1.8,
+      0.6
     ]
   },
   {
@@ -64,19 +64,19 @@
     "state": "Madhya Pradesh",
     "lat": 22.7,
     "lon": 75.9,
-    "forecast_precip_mm": 49.2,
-    "risk": "HIGH",
+    "forecast_precip_mm": 71.4,
+    "risk": "MEDIUM",
     "daily_precip": [
-      2.7,
-      1.0,
-      0.8,
-      0.3,
-      0.6,
-      7.8,
-      21.6,
+      4.1,
+      2.5,
+      1.7,
+      0.1,
+      3.9,
+      29.7,
+      7.2,
+      10.2,
       5.4,
-      3.6,
-      5.4
+      6.6
     ]
   },
   {
@@ -84,19 +84,19 @@
     "state": "Maharashtra",
     "lat": 18.5,
     "lon": 73.9,
-    "forecast_precip_mm": 16.6,
+    "forecast_precip_mm": 43.6,
     "risk": "HIGH",
     "daily_precip": [
-      3.1,
-      1.4,
-      1.4,
-      2.6,
+      3.8,
       2.7,
-      0.6,
+      2.3,
+      1.5,
+      1.5,
+      3.0,
       2.4,
-      1.2,
-      0.6,
-      0.6
+      3.6,
+      7.8,
+      15.0
     ]
   }
 ]
