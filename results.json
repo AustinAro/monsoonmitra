@@ -4,18 +4,18 @@
     "state": "Punjab",
     "lat": 30.9,
     "lon": 75.8,
-    "forecast_precip_mm": 16.9,
+    "forecast_precip_mm": 13.5,
     "risk": "HIGH",
     "daily_precip": [
-      0.5,
-      2.8,
-      2.5,
-      0.3,
-      0.0,
-      9.6,
-      0.0,
-      0.0,
+      2.9,
+      1.1,
+      0.2,
       1.2,
+      6.6,
+      1.5,
+      0.0,
+      0.0,
+      0.0,
       0.0
     ]
   },
@@ -24,19 +24,19 @@
     "state": "Haryana",
     "lat": 29.1,
     "lon": 75.7,
-    "forecast_precip_mm": 28.3,
+    "forecast_precip_mm": 19.7,
     "risk": "HIGH",
     "daily_precip": [
-      0.1,
-      6.7,
-      4.4,
-      3.0,
-      3.0,
-      4.5,
-      0.6,
-      4.2,
-      0.6,
-      1.2
+      1.0,
+      0.9,
+      0.7,
+      1.2,
+      2.7,
+      13.2,
+      0.0,
+      0.0,
+      0.0,
+      0.0
     ]
   },
   {
@@ -44,19 +44,19 @@
     "state": "Rajasthan",
     "lat": 26.9,
     "lon": 75.8,
-    "forecast_precip_mm": 121.4,
-    "risk": "LOW",
+    "forecast_precip_mm": 51.2,
+    "risk": "MEDIUM",
     "daily_precip": [
-      0.1,
-      1.0,
-      4.4,
-      4.9,
-      1.2,
+      1.9,
+      1.9,
+      8.1,
+      0.9,
+      10.5,
+      21.3,
       3.6,
-      3.6,
-      97.2,
       1.2,
-      4.2
+      1.8,
+      0.0
     ]
   },
   {
@@ -64,19 +64,19 @@
     "state": "Madhya Pradesh",
     "lat": 22.7,
     "lon": 75.9,
-    "forecast_precip_mm": 76.7,
+    "forecast_precip_mm": 68.2,
     "risk": "MEDIUM",
     "daily_precip": [
-      2.9,
-      14.1,
-      23.9,
-      18.1,
+      13.2,
+      28.0,
+      7.5,
+      1.2,
       1.8,
-      1.5,
-      2.4,
-      7.2,
-      2.4,
-      2.4
+      0.9,
+      3.6,
+      4.8,
+      3.0,
+      4.2
     ]
   },
   {
@@ -84,19 +84,19 @@
     "state": "Maharashtra",
     "lat": 18.5,
     "lon": 73.9,
-    "forecast_precip_mm": 11.0,
+    "forecast_precip_mm": 19.8,
     "risk": "HIGH",
     "daily_precip": [
-      0.5,
+      3.2,
       2.9,
-      1.3,
       1.2,
-      0.6,
-      1.5,
-      0.6,
-      1.8,
-      0.6,
-      0.0
+      0.5,
+      2.1,
+      3.3,
+      1.2,
+      4.2,
+      0.0,
+      1.2
     ]
   }
 ]
