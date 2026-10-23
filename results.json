@@ -4,17 +4,17 @@
     "state": "Punjab",
     "lat": 30.9,
     "lon": 75.8,
-    "forecast_precip_mm": 1.0,
+    "forecast_precip_mm": 4.4,
     "risk": "HIGH",
     "daily_precip": [
       0.0,
-      0.0,
-      1.0,
-      0.0,
+      1.4,
       0.0,
       0.0,
       0.0,
       0.0,
+      0.0,
+      3.0,
       0.0,
       0.0
     ]
@@ -24,19 +24,19 @@
     "state": "Haryana",
     "lat": 29.1,
     "lon": 75.7,
-    "forecast_precip_mm": 2.1,
+    "forecast_precip_mm": 4.5,
     "risk": "HIGH",
     "daily_precip": [
-      0.0,
-      0.3,
-      0.0,
-      0.0,
+      0.1,
+      0.2,
       0.0,
       0.0,
       0.0,
       0.0,
+      0.2,
+      4.0,
       0.0,
-      1.8
+      0.0
     ]
   },
   {
@@ -44,30 +44,10 @@
     "state": "Rajasthan",
     "lat": 26.9,
     "lon": 75.8,
-    "forecast_precip_mm": 7.8,
+    "forecast_precip_mm": 1.3,
     "risk": "HIGH",
     "daily_precip": [
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      7.8
-    ]
-  },
-  {
-    "name": "Indore Rural",
-    "state": "Madhya Pradesh",
-    "lat": 22.7,
-    "lon": 75.9,
-    "forecast_precip_mm": 3.0,
-    "risk": "HIGH",
-    "daily_precip": [
-      1.2,
+      0.7,
       0.0,
       0.0,
       0.0,
@@ -76,7 +56,27 @@
       0.0,
       0.0,
       0.6,
-      1.2
+      0.0
+    ]
+  },
+  {
+    "name": "Indore Rural",
+    "state": "Madhya Pradesh",
+    "lat": 22.7,
+    "lon": 75.9,
+    "forecast_precip_mm": 4.2,
+    "risk": "HIGH",
+    "daily_precip": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      3.0,
+      0.6,
+      0.6
     ]
   },
   {
@@ -84,19 +84,19 @@
     "state": "Maharashtra",
     "lat": 18.5,
     "lon": 73.9,
-    "forecast_precip_mm": 3.8,
+    "forecast_precip_mm": 0.9,
     "risk": "HIGH",
     "daily_precip": [
-      0.0,
-      0.0,
-      0.2,
-      0.0,
-      0.0,
+      0.5,
+      0.4,
       0.0,
       0.0,
       0.0,
-      2.4,
-      1.2
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
     ]
   }
 ]
