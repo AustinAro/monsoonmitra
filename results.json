@@ -4,15 +4,15 @@
     "state": "Punjab",
     "lat": 30.9,
     "lon": 75.8,
-    "forecast_precip_mm": 0.6,
+    "forecast_precip_mm": 4.2,
     "risk": "HIGH",
     "daily_precip": [
-      0.6,
       0.0,
       0.0,
       0.0,
       0.0,
       0.0,
+      4.2,
       0.0,
       0.0,
       0.0,
@@ -24,16 +24,16 @@
     "state": "Haryana",
     "lat": 29.1,
     "lon": 75.7,
-    "forecast_precip_mm": 1.6,
+    "forecast_precip_mm": 11.4,
     "risk": "HIGH",
     "daily_precip": [
-      0.4,
       0.0,
       0.0,
       0.0,
       0.0,
+      0.9,
+      10.5,
       0.0,
-      1.2,
       0.0,
       0.0,
       0.0
@@ -44,16 +44,16 @@
     "state": "Rajasthan",
     "lat": 26.9,
     "lon": 75.8,
-    "forecast_precip_mm": 5.7,
+    "forecast_precip_mm": 6.6,
     "risk": "HIGH",
     "daily_precip": [
       0.0,
       0.0,
       0.0,
       0.0,
+      1.2,
+      5.4,
       0.0,
-      1.5,
-      4.2,
       0.0,
       0.0,
       0.0
@@ -64,30 +64,10 @@
     "state": "Madhya Pradesh",
     "lat": 22.7,
     "lon": 75.9,
-    "forecast_precip_mm": 3.0,
+    "forecast_precip_mm": 0.0,
     "risk": "HIGH",
     "daily_precip": [
       0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.6,
-      1.8,
-      0.6
-    ]
-  },
-  {
-    "name": "Pune Rural",
-    "state": "Maharashtra",
-    "lat": 18.5,
-    "lon": 73.9,
-    "forecast_precip_mm": 1.5,
-    "risk": "HIGH",
-    "daily_precip": [
-      1.5,
       0.0,
       0.0,
       0.0,
@@ -97,6 +77,26 @@
       0.0,
       0.0,
       0.0
+    ]
+  },
+  {
+    "name": "Pune Rural",
+    "state": "Maharashtra",
+    "lat": 18.5,
+    "lon": 73.9,
+    "forecast_precip_mm": 18.6,
+    "risk": "HIGH",
+    "daily_precip": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      3.0,
+      5.4,
+      7.8,
+      2.4
     ]
   }
 ]
