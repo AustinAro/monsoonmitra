@@ -4,66 +4,6 @@
     "state": "Punjab",
     "lat": 30.9,
     "lon": 75.8,
-    "forecast_precip_mm": 4.2,
-    "risk": "HIGH",
-    "daily_precip": [
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      4.2,
-      0.0,
-      0.0,
-      0.0,
-      0.0
-    ]
-  },
-  {
-    "name": "Hisar",
-    "state": "Haryana",
-    "lat": 29.1,
-    "lon": 75.7,
-    "forecast_precip_mm": 11.4,
-    "risk": "HIGH",
-    "daily_precip": [
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.9,
-      10.5,
-      0.0,
-      0.0,
-      0.0,
-      0.0
-    ]
-  },
-  {
-    "name": "Jaipur Rural",
-    "state": "Rajasthan",
-    "lat": 26.9,
-    "lon": 75.8,
-    "forecast_precip_mm": 6.6,
-    "risk": "HIGH",
-    "daily_precip": [
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      1.2,
-      5.4,
-      0.0,
-      0.0,
-      0.0,
-      0.0
-    ]
-  },
-  {
-    "name": "Indore Rural",
-    "state": "Madhya Pradesh",
-    "lat": 22.7,
-    "lon": 75.9,
     "forecast_precip_mm": 0.0,
     "risk": "HIGH",
     "daily_precip": [
@@ -80,11 +20,11 @@
     ]
   },
   {
-    "name": "Pune Rural",
-    "state": "Maharashtra",
-    "lat": 18.5,
-    "lon": 73.9,
-    "forecast_precip_mm": 18.6,
+    "name": "Hisar",
+    "state": "Haryana",
+    "lat": 29.1,
+    "lon": 75.7,
+    "forecast_precip_mm": 0.0,
     "risk": "HIGH",
     "daily_precip": [
       0.0,
@@ -93,10 +33,70 @@
       0.0,
       0.0,
       0.0,
-      3.0,
-      5.4,
-      7.8,
-      2.4
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  {
+    "name": "Jaipur Rural",
+    "state": "Rajasthan",
+    "lat": 26.9,
+    "lon": 75.8,
+    "forecast_precip_mm": 0.0,
+    "risk": "HIGH",
+    "daily_precip": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  {
+    "name": "Indore Rural",
+    "state": "Madhya Pradesh",
+    "lat": 22.7,
+    "lon": 75.9,
+    "forecast_precip_mm": 0.6,
+    "risk": "HIGH",
+    "daily_precip": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.6,
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  {
+    "name": "Pune Rural",
+    "state": "Maharashtra",
+    "lat": 18.5,
+    "lon": 73.9,
+    "forecast_precip_mm": 21.5,
+    "risk": "HIGH",
+    "daily_precip": [
+      0.0,
+      0.0,
+      0.0,
+      2.3,
+      4.5,
+      2.1,
+      6.6,
+      4.8,
+      0.6,
+      0.6
     ]
   }
 ]
