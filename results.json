@@ -84,10 +84,10 @@
     "state": "Maharashtra",
     "lat": 18.5,
     "lon": 73.9,
-    "forecast_precip_mm": 0.1,
+    "forecast_precip_mm": 0.0,
     "risk": "HIGH",
     "daily_precip": [
-      0.1,
+      0.0,
       0.0,
       0.0,
       0.0,
